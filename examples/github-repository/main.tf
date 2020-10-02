@@ -1,5 +1,5 @@
 module "repositories" {
-  source      = "github.com/flexibility-terraform-modules/terraform-github/tree/master/modules/github-repository?ref=0.0.1"
+  source              = "github.com/FlexibilitySRL/terraform-github/modules/github-repository"
 
   name                = "Repository name"
   description         = "Repository description"
