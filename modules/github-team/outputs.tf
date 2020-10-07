@@ -8,7 +8,7 @@ output "id" {
 }
 
 output "team_name" {
-  description = "The name of the team."
+  description = "The ID of the team."
   value       = github_team.team.name
 }
 

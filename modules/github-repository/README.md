@@ -1,4 +1,3 @@
-
 # Github Repository module
 Create a GitHub Repository and their branches and branch protection.
 
