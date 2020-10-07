@@ -47,7 +47,7 @@ These types of resources are supported:
 `github-membership`:
 ```hcl
 module "members" {
-  source      = "github.com/FlexibilitySRL/terraform-github/tree/master/modules/github-member"
+  source      = "github.com/FlexibilitySRL/terraform-github/modules/github-member"
 
   admins      = [ "maintainer", "admin-company" ]
   commons     = [ "developer", "customer", "tester", "ops" ]
@@ -57,7 +57,7 @@ module "members" {
 `github-team`:
 ```hcl
 module "parent_teams" {
-  source      = "github.com/FlexibilitySRL/terraform-github/tree/master/modules/github-team"
+  source      = "github.com/FlexibilitySRL/terraform-github/modules/github-team"
   name        = "Implementation"
   description = "This is the description of the team" 
   members     = [ "customer" ]
@@ -65,7 +65,7 @@ module "parent_teams" {
 }
 
 module "child_teams" {
-  source          = "github.com/FlexibilitySRL/terraform-github/tree/master/modules/github-team"
+  source          = "github.com/FlexibilitySRL/terraform-github/modules/github-team"
 
   name            = "Developer team"
   parent_team_id  = module.parent_teams["Implementation"].id
@@ -81,7 +81,7 @@ module "child_teams" {
 `github-repository`:
 ```hcl
 module "repositories" {
-  source      = "github.com/FlexibilitySRL/terraform-github/tree/master/modules/github-repository"
+  source      = "github.com/FlexibilitySRL/terraform-github/modules/github-repository"
 
   name                = "Repository name"
   description         = "Repository description"
@@ -104,7 +104,7 @@ module "repositories" {
 `github-team-repository`:
 ```hcl
 module "team_repository" {
-  source      = "github.com/FlexibilitySRL/terraform-github/tree/master/modules/github-team-repository"
+  source      = "github.com/FlexibilitySRL/terraform-github/modules/github-team-repository"
 
   team_id     = module.parent_teams["implementation"].id
   admins      = [ "maintainer" ]
@@ -127,19 +127,19 @@ module "team_repository" {
 
 ### 1. Add Github Members
 
-Use [github-membership module](https://github.com/FlexibilitySRL/terraform-github/tree/master/modules/github-membership) module to add github members to company.
+Use [github-membership module](https://github.com/FlexibilitySRL/terraform-github/modules/github-membership) module to add github members to company.
 
 ### 2. Create Teams and add Members
 
-Use [github-team module](https://github.com/FlexibilitySRL/terraform-github/tree/master/modules/github-team) module to create Teams and add members and maintainers.
+Use [github-team module](https://github.com/FlexibilitySRL/terraform-github/modules/github-team) module to create Teams and add members and maintainers.
 
 ### 3. Create Repositories, branches and branch protection
 
-Use [github-repository module](https://github.com/FlexibilitySRL/terraform-github/tree/master/modules/github-repository) module to create one or many repositories and create its branches and protect or not that branches.
+Use [github-repository module](https://github.com/FlexibilitySRL/terraform-github/modules/github-repository) module to create one or many repositories and create its branches and protect or not that branches.
 
 ### 4. Add a relation between Teams and Repositories
 
-Use [github-team-repository module](https://github.com/FlexibilitySRL/terraform-github/tree/master/modules/github-team-repository) module to add a relationship between repositories and teams.
+Use [github-team-repository module](https://github.com/FlexibilitySRL/terraform-github/modules/github-team-repository) module to add a relationship between repositories and teams.
 
 
 ## Examples
