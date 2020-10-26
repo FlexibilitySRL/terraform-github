@@ -51,7 +51,7 @@ resource "github_branch_protection" "branch_protection" {
   
   for_each        = var.protection_branchs
 
-  branch          = each.key
+  branch          = can(each.value.branch_name_pattern) ? each.value.branch_name_pattern : each.key
   enforce_admins  = can(each.value.enforce_admin) ? each.value.enforce_admin : false
 
   require_signed_commits = can(each.value.require_signed_commits) ?  each.value.require_signed_commits : false
