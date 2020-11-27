@@ -30,6 +30,8 @@ resource "github_repository" "repository" {
 
   archived            = var.archived
 
+  topics              =var.topics
+
   dynamic "template" {
     for_each = var.template
     content {

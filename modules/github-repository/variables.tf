@@ -127,5 +127,11 @@ variable "template" {
   default     = []
 }
 
+variable "topics" {
+  description = "(Optional) Topics."
+  type        = list(string)
+  default     = []
+}
+
 
 
