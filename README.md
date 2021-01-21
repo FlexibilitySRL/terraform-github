@@ -24,7 +24,7 @@ These types of resources are supported:
                                                                                                                                                                                                                    
 | Name | Version |                                                                                                                                                                                                 
 |------|---------|                                                                                                                                                                                                 
-| [Github](https://registry.terraform.io/providers/hashicorp/github/latest/docs)  | ~> 3.0.0 |
+| [Github](https://registry.terraform.io/providers/hashicorp/github/latest/docs)  | ~> 4.0.0 |
 
 
 ## Features
