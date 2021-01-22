@@ -48,7 +48,7 @@ resource "github_branch" "development" {
   branch      = each.key
 }
 
-resource "github_branch_protection" "branch_protection" {
+resource "github_branch_protection_v3" "branch_protection" {
   repository      = github_repository.repository.name
   
   for_each        = var.protection_branchs
