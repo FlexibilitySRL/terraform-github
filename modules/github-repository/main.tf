@@ -41,6 +41,32 @@ resource "github_repository" "repository" {
   }
 }
 
+# Create default branches (master and develop) if enabled
+resource "github_branch" "master" {
+  count       = var.create_default_branches ? 1 : 0
+  repository  = github_repository.repository.name
+  branch      = "master"
+  source_branch = "main"
+}
+
+resource "github_branch" "develop" {
+  count       = var.create_default_branches ? 1 : 0
+  repository  = github_repository.repository.name
+  branch      = "develop"
+  source_branch = "main"
+}
+
+# Create README.md on master branch
+resource "github_repository_file" "readme" {
+  count      = var.create_default_branches ? 1 : 0
+  repository = github_repository.repository.name
+  branch     = "master"
+  file       = "README.md"
+  content    = "# ${github_repository.repository.name}"
+  message    = "Initial README"
+  depends_on = [github_branch.master]
+}
+
 resource "github_branch" "development" {
   repository  = github_repository.repository.name
 
@@ -54,6 +80,10 @@ resource "github_branch_protection" "branch_protection" {
   for_each        = var.protection_branchs
 
   branch          = can(each.value.branch_name_pattern) ? each.value.branch_name_pattern : each.key
+  
+  # Ensure default branches exist before applying protections
+  depends_on      = [github_branch.master, github_branch.develop]
+  
   enforce_admins  = can(each.value.enforce_admin) ? each.value.enforce_admin : false
 
   require_signed_commits = can(each.value.require_signed_commits) ?  each.value.require_signed_commits : false
