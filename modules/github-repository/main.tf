@@ -72,6 +72,9 @@ resource "github_branch" "development" {
 
   for_each    = toset(var.branchs)
   branch      = each.key
+  
+  # Ensure repository exists before creating branches
+  depends_on  = [github_repository.repository]
 }
 
 resource "github_branch_protection" "branch_protection" {
