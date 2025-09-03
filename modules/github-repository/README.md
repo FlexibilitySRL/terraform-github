@@ -32,6 +32,7 @@ Create a GitHub Repository and their branches and branch protection.
 | gitignore_template | The gitignore template for the repository | string | `null` | no | 
 | license_template | The license template for the repository | string | `null` | no |
 | archived | Define if the repository has to be archived or not. | bool | `false` | no |
+| create_default_branches | Whether to create default master and develop branches | bool | `true` | no |
 | branchs | A list branch to create | set(string) | `[]` | no | 
 | protection_branchs | A branch protection config for the repository | any | `[]` | no |
 | template | Template Data | list(map(string)) | `[]` | no | 
