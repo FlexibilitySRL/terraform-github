@@ -66,7 +66,7 @@ resource "github_repository_file" "readme" {
   branch     = "master"
   file       = "README.md"
   content    = "# ${github_repository.repository.name}"
-  message    = "Initial README"
+  commit_message = "Initial README"
   depends_on = [github_branch.master[0]]
 }
 
