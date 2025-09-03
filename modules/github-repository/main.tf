@@ -84,8 +84,8 @@ resource "github_branch_protection" "branch_protection" {
 
   branch          = can(each.value.branch_name_pattern) ? each.value.branch_name_pattern : each.key
   
-  # Ensure default branches exist before applying protections
-  depends_on      = [github_branch.master, github_branch.develop]
+  # Ensure default branches exist before applying protections (only if they were created)
+  depends_on      = var.create_default_branches ? [github_branch.master, github_branch.develop] : []
   
   enforce_admins  = can(each.value.enforce_admin) ? each.value.enforce_admin : false
 
