@@ -7,6 +7,9 @@
 # This module also accepts a list of repositories to that the team can be added with "admin", "push", or "pull"
 # permissions.
 # ---------------------------------------------------------------------------------------------------------------------
+
+
+
 resource "github_repository" "repository" {
   name                = var.name
   description         = var.description
@@ -64,7 +67,7 @@ resource "github_repository_file" "readme" {
   file       = "README.md"
   content    = "# ${github_repository.repository.name}"
   message    = "Initial README"
-  depends_on = [github_branch.master]
+  depends_on = [github_branch.master[0]]
 }
 
 resource "github_branch" "development" {
@@ -77,6 +80,7 @@ resource "github_branch" "development" {
   depends_on  = [github_repository.repository]
 }
 
+# Create branch protection rules
 resource "github_branch_protection" "branch_protection" {
   repository      = github_repository.repository.name
   
@@ -84,13 +88,12 @@ resource "github_branch_protection" "branch_protection" {
 
   branch          = can(each.value.branch_name_pattern) ? each.value.branch_name_pattern : each.key
   
-  # Ensure default branches exist before applying protections (only if they were created)
-  depends_on      = var.create_default_branches ? [github_branch.master, github_branch.develop] : []
+  # Always depend on repository
+  depends_on      = [github_repository.repository]
   
   enforce_admins  = can(each.value.enforce_admin) ? each.value.enforce_admin : false
 
   require_signed_commits = can(each.value.require_signed_commits) ?  each.value.require_signed_commits : false
-
 
   dynamic "required_pull_request_reviews" {
     for_each = each.value.required_approving_review_count > 0 ? [ "required_pull_request_reviews" ] : []
@@ -110,7 +113,6 @@ resource "github_branch_protection" "branch_protection" {
       contexts = can(each.value.required_status_checks_contexts) ? each.value.required_status_checks_contexts : []
     }
   }
-
 
   dynamic "restrictions" {
     for_each = ((can(each.value.restrictions_users) ? length(each.value.restrictions_users): 0) +
