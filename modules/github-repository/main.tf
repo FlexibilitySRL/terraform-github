@@ -105,8 +105,13 @@ resource "github_branch_protection" "branch_protection" {
 
   branch          = can(each.value.branch_name_pattern) ? each.value.branch_name_pattern : each.key
   
-  # Always depend on repository
-  depends_on      = [github_repository.repository]
+  # Depend on repository and branches (default and dynamic)
+  depends_on      = [
+    github_repository.repository,
+    github_branch.master,
+    github_branch.develop,
+    github_branch.development,
+  ]
   
   enforce_admins  = can(each.value.enforce_admin) ? each.value.enforce_admin : false
 
