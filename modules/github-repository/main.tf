@@ -49,7 +49,7 @@ resource "github_branch" "master" {
   count       = var.create_default_branches ? 1 : 0
   repository  = github_repository.repository.name
   branch      = "master"
-  source_branch = "main"
+  source_branch = "master"
   
   # Ensure repository exists before creating branches
   depends_on  = [github_repository.repository]
@@ -59,7 +59,7 @@ resource "github_branch" "develop" {
   count       = var.create_default_branches ? 1 : 0
   repository  = github_repository.repository.name
   branch      = "develop"
-  source_branch = "main"
+  source_branch = "master"
   
   # Ensure repository exists before creating branches
   depends_on  = [github_repository.repository]
