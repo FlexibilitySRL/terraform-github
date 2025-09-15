@@ -44,54 +44,13 @@ resource "github_repository" "repository" {
   }
 }
 
-# Create default branches (master and develop) if enabled
-resource "github_branch" "master" {
-  count       = var.create_default_branches ? 1 : 0
-  repository  = github_repository.repository.name
-  branch      = "master"
-  source_branch = "master"
-  
-  # Ensure repository exists before creating branches
-  depends_on  = [github_repository.repository]
-}
-
-resource "github_branch" "develop" {
-  count       = var.create_default_branches ? 1 : 0
-  repository  = github_repository.repository.name
-  branch      = "develop"
-  source_branch = "master"
-  
-  # Ensure repository exists before creating branches
-  depends_on  = [github_repository.repository]
-}
-
-# Create README.md on master branch
-resource "github_repository_file" "readme_master" {
-  count      = var.create_default_branches ? 1 : 0
-  repository = github_repository.repository.name
-  branch     = "master"
-  file       = "README.md"
-  content    = "# ${github_repository.repository.name}"
-  commit_message = "Initial README"
-  depends_on = [github_branch.master[0]]
-}
-
-# Create README.md on develop branch
-resource "github_repository_file" "readme_develop" {
-  count      = var.create_default_branches ? 1 : 0
-  repository = github_repository.repository.name
-  branch     = "develop"
-  file       = "README.md"
-  content    = "# ${github_repository.repository.name}"
-  commit_message = "Initial README"
-  depends_on = [github_branch.develop[0]]
-}
 
 resource "github_branch" "development" {
   repository  = github_repository.repository.name
 
-  for_each    = var.create_default_branches ? toset([for branch in var.branchs : branch if branch != "master" && branch != "develop"]) : toset(var.branchs)
+  for_each    = toset(var.branchs)
   branch      = each.key
+  source_branch = "master"  # Create from master branch
   
   # Ensure repository exists before creating branches
   depends_on  = [github_repository.repository]
@@ -105,13 +64,8 @@ resource "github_branch_protection" "branch_protection" {
 
   branch          = can(each.value.branch_name_pattern) ? each.value.branch_name_pattern : each.key
   
-  # Depend on repository and branches (default and dynamic)
-  depends_on      = var.create_default_branches ? [
-    github_repository.repository,
-    github_branch.master[0],
-    github_branch.develop[0],
-    github_branch.development,
-  ] : [
+  # Depend on repository and branches
+  depends_on      = [
     github_repository.repository,
     github_branch.development,
   ]
