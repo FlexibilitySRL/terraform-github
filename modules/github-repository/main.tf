@@ -48,7 +48,8 @@ resource "github_repository" "repository" {
 resource "github_branch" "development" {
   repository  = github_repository.repository.name
 
-  for_each    = toset(var.branchs)
+  # Exclude master branch when auto_init is true (GitHub creates it automatically)
+  for_each    = var.auto_init ? toset([for branch in var.branchs : branch if branch != "master"]) : toset(var.branchs)
   branch      = each.key
   source_branch = "master"  # Create from master branch
   
