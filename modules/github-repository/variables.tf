@@ -109,11 +109,6 @@ variable "archived" {
   default     = false
 }
 
-variable "create_default_branches" {
-  description = "(Optional) Whether to create default master and develop branches. Default is true."
-  type        = bool
-  default     = true
-}
 
 variable "branchs" {
   description = "(Optional) A list branch to create."
