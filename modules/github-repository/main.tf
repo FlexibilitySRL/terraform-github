@@ -106,10 +106,13 @@ resource "github_branch_protection" "branch_protection" {
   branch          = can(each.value.branch_name_pattern) ? each.value.branch_name_pattern : each.key
   
   # Depend on repository and branches (default and dynamic)
-  depends_on      = [
+  depends_on      = var.create_default_branches ? [
     github_repository.repository,
-    github_branch.master,
-    github_branch.develop,
+    github_branch.master[0],
+    github_branch.develop[0],
+    github_branch.development,
+  ] : [
+    github_repository.repository,
     github_branch.development,
   ]
   
