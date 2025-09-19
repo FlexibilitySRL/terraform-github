@@ -28,7 +28,7 @@ variable "homepage_url" {
 variable "visibility" {
   description = "(Optional) Define if the repository is private or not. Default is private."
   type        = string
-  default     = "private"
+  default     = null
 }
 
 variable "has_issues" {
