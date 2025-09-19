@@ -14,7 +14,9 @@ resource "github_repository" "repository" {
   name                = var.name
   description         = var.description
   homepage_url        = var.homepage_url
-  visibility          = can(var.visibility) ? var.visibility : "private"
+
+  # Only set visibility if explicitly provided and different from default
+  visibility          = var.visibility
 
   has_issues          = var.has_issues
   has_projects        = var.has_projects
