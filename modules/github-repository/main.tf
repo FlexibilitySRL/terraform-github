@@ -44,6 +44,12 @@ resource "github_repository" "repository" {
       repository = template.value["repository"]
     }
   }
+
+  # Prevent drift from ETAG changes and accidental deletions
+  lifecycle {
+    ignore_changes = [etag]
+    prevent_destroy = true
+  }
 }
 
 
@@ -105,7 +111,12 @@ resource "github_branch_protection" "branch_protection" {
       teams  = can(each.value.restrictions_teams) ? each.value.restrictions_teams : []
       apps   = can(each.value.restrictions_apps) ? each.value.restrictions_apps : []
     }
-  }  
+  }
+
+  # Prevent drift from manual changes to team restrictions
+  lifecycle {
+    ignore_changes = [restrict_pushes]
+  }
 }
 
 
