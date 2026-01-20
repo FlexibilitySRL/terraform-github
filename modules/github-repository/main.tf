@@ -45,9 +45,8 @@ resource "github_repository" "repository" {
     }
   }
 
-  # Prevent drift from ETAG changes and accidental deletions
+  # Prevent accidental deletions
   lifecycle {
-    ignore_changes = [etag]
     prevent_destroy = true
   }
 }
