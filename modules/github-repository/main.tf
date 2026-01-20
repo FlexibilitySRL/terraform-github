@@ -112,11 +112,6 @@ resource "github_branch_protection" "branch_protection" {
       apps   = can(each.value.restrictions_apps) ? each.value.restrictions_apps : []
     }
   }
-
-  # Prevent drift from manual changes to team restrictions
-  lifecycle {
-    ignore_changes = [restrict_pushes]
-  }
 }
 
 
