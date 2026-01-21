@@ -48,6 +48,12 @@ resource "github_repository" "repository" {
   # Prevent accidental deletions
   lifecycle {
     prevent_destroy = true
+    ignore_changes  = [
+      has_projects,
+      has_wiki,
+      has_downloads,
+      description
+    ]
   }
 }
 
