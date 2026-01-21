@@ -35,7 +35,7 @@ resource "github_repository" "repository" {
 
   archived            = var.archived
 
-  topics              =var.topics
+  topics              = var.topics
 
   dynamic "template" {
     for_each = var.template
@@ -45,9 +45,8 @@ resource "github_repository" "repository" {
     }
   }
 
-  # Prevent drift from ETAG changes and accidental deletions
+  # Prevent accidental deletions
   lifecycle {
-    ignore_changes = [etag]
     prevent_destroy = true
   }
 }
@@ -111,6 +110,15 @@ resource "github_branch_protection" "branch_protection" {
       teams  = can(each.value.restrictions_teams) ? each.value.restrictions_teams : []
       apps   = can(each.value.restrictions_apps) ? each.value.restrictions_apps : []
     }
+  }
+
+  # Ignore changes made manually in GitHub after initial creation
+  lifecycle {
+    ignore_changes = [
+      required_pull_request_reviews,
+      required_status_checks,
+      restrictions
+    ]
   }
 }
 
