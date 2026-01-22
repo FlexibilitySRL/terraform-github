@@ -52,7 +52,10 @@ resource "github_repository" "repository" {
       has_projects,
       has_wiki,
       has_downloads,
-      description
+      description,
+      visibility,
+      private,
+      default_branch
     ]
   }
 }
