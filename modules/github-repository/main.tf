@@ -49,11 +49,11 @@ resource "github_repository" "repository" {
   lifecycle {
     prevent_destroy = true
     ignore_changes  = [
+      etag,
       has_projects,
       has_wiki,
       has_downloads,
       description,
-      visibility,
       private,
       default_branch
     ]
@@ -130,5 +130,4 @@ resource "github_branch_protection" "branch_protection" {
     ]
   }
 }
-
 
