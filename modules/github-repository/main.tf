@@ -45,9 +45,7 @@ resource "github_repository" "repository" {
     }
   }
 
-  # Prevent accidental deletions
   lifecycle {
-    prevent_destroy = true
     ignore_changes  = [
       etag
     ]
