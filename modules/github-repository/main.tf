@@ -47,7 +47,8 @@ resource "github_repository" "repository" {
 
   lifecycle {
     ignore_changes  = [
-      etag
+      etag,
+      template
     ]
   }
 }
