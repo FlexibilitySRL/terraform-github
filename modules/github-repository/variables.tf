@@ -28,7 +28,7 @@ variable "homepage_url" {
 variable "visibility" {
   description = "(Optional) Define if the repository is private or not. Default is private."
   type        = string
-  default     = null
+  default     = "private"
 }
 
 variable "has_issues" {
@@ -132,6 +132,18 @@ variable "topics" {
   description = "(Optional) Topics."
   type        = list(string)
   default     = []
+}
+
+variable "default_branch" {
+  description = "(Optional) The default branch for the repository. If not set, GitHub decides based on org settings."
+  type        = string
+  default     = null
+}
+
+variable "source_branch" {
+  description = "(Optional) The source branch from which to create new branches. Defaults to 'main'."
+  type        = string
+  default     = "main"
 }
 
 

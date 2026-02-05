@@ -48,19 +48,29 @@ resource "github_repository" "repository" {
   lifecycle {
     ignore_changes  = [
       etag,
-      template
+      template,
+      auto_init  # Ignore after creation to prevent recreation
     ]
   }
+}
+
+# Set default branch if specified (must happen after branches are created)
+resource "github_branch_default" "default" {
+  count      = var.default_branch != null ? 1 : 0
+  repository = github_repository.repository.name
+  branch     = var.default_branch
+  
+  depends_on = [github_branch.development]
 }
 
 
 resource "github_branch" "development" {
   repository  = github_repository.repository.name
 
-  # Exclude master branch when auto_init is true (GitHub creates it automatically)
-  for_each    = var.auto_init ? toset([for branch in var.branchs : branch if branch != "master"]) : toset(var.branchs)
+  # Exclude source branch when auto_init is true (GitHub creates it automatically)
+  for_each    = var.auto_init ? toset([for branch in var.branchs : branch if branch != var.source_branch]) : toset(var.branchs)
   branch      = each.key
-  source_branch = "master"  # Create from master branch
+  source_branch = var.source_branch  # Configurable source branch
   
   # Ensure repository exists before creating branches
   depends_on  = [github_repository.repository]
