@@ -47,22 +47,17 @@ resource "github_repository" "repository" {
 
   lifecycle {
     ignore_changes  = [
-      etag,
       template,
       auto_init  # Ignore after creation to prevent recreation
     ]
   }
 }
 
-# Set default branch if specified (must happen after branches are created)
-resource "github_branch_default" "default" {
-  count      = var.default_branch != null ? 1 : 0
-  repository = github_repository.repository.name
-  branch     = var.default_branch
-  
-  depends_on = [github_branch.development]
-}
-
+# NOTE: default_branch setting requires GitHub provider v4+
+# With provider v3, default branch is set by GitHub based on:
+# - auto_init = true: Creates 'main' or 'master' based on org settings
+# - auto_init = false: First pushed branch becomes default
+# To change default branch in existing repos, do it manually via GitHub UI or gh CLI
 
 resource "github_branch" "development" {
   repository  = github_repository.repository.name

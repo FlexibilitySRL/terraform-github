@@ -135,7 +135,7 @@ variable "topics" {
 }
 
 variable "default_branch" {
-  description = "(Optional) The default branch for the repository. If not set, GitHub decides based on org settings."
+  description = "(Optional) The default branch for the repository. NOTE: Requires GitHub provider v4+. Currently not functional with v3 - use GitHub UI or gh CLI to set default branch."
   type        = string
   default     = null
 }
